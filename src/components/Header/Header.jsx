@@ -8,6 +8,8 @@ import "./Header.css";
 const Header = () => {
   const { state } = useContext(AppContext);
   const { cart } = state;
+  const reducer = (acumulador, currentValue) => acumulador + currentValue.qty;
+  const totalQty = cart.reduce(reducer, 0);
 
   return (
     <div className="Header">
@@ -21,7 +23,7 @@ const Header = () => {
         <Link to="/checkout">
           <FaShoppingBasket />
         </Link>
-        {cart.length > 0 && <div className="Header-alert">{cart.length}</div>}
+        {cart.length > 0 && <div className="Header-alert">{totalQty}</div>}
       </div>
     </div>
   );

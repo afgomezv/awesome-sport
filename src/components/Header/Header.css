@@ -7,6 +7,7 @@
   justify-content: space-evenly;
   align-items: center;
   justify-items: center;
+  font-size: 1.7rem;
   width: 30px;
   margin: 0 0 0 0.5em;
 }
@@ -17,5 +18,5 @@
 }
 .Header a {
   text-decoration: none;
-  color: #33b1ff;
+  color: #00bcd4;
 }

@@ -1,8 +1,31 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useRef, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import AppContext from "../../context/Appcontext";
 import "./Information.css";
 
 const Information = () => {
+  const { state, addToBuyer } = useContext(AppContext);
+  const form = useRef(null);
+  const navigate = useNavigate();
+  const { cart } = state;
+
+  const handleSubmit = () => {
+    const formData = new FormData(form.current);
+    const buyer = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      address: formData.get("address"),
+      country: formData.get("country"),
+      departamento: formData.get("departamento"),
+      city: formData.get("city"),
+      cp: formData.get("cp"),
+      phone: formData.get("phone"),
+    };
+
+    addToBuyer(buyer);
+    navigate("/checkout/payment");
+  };
+
   return (
     <div className="Information">
       <div className="Information-content">
@@ -10,33 +33,37 @@ const Information = () => {
           <h2>Informacion de Contacto</h2>
         </div>
         <div className="Information-form">
-          <form action="">
+          <form ref={form}>
             <input type="text" placeholder="Nombre Completo" name="name" />
             <input type="text" placeholder="Correo electrónico" name="email" />
             <input type="text" placeholder="Dirección" name="address" />
-            <input type="text" placeholder="apto" name="apto" />
-            <input type="text" placeholder="Ciudad" name="city" />
             <input type="text" placeholder="Pais" name="country" />
+            <input type="text" placeholder="Departamento" name="departamento" />
+            <input type="text" placeholder="Ciudad" name="city" />
             <input type="text" placeholder="Código Postal" name="cp" />
             <input type="text" placeholder="Telefono" name="phone" />
-            <input type="text" placeholder="Nombre Completo" name="name" />
           </form>
         </div>
         <div className="Information-buttons">
-          <div className="Information-back">Regresar</div>
-          <Link to="/checkout/payment">
-            <div className="Information-next">Pagar</div>
-          </Link>
+          <Link to="/checkout/payment">Regresar</Link>
+
+          <div className="Information-next">
+            <button type="button" onClick={handleSubmit}>
+              Pagar
+            </button>
+          </div>
         </div>
       </div>
       <div className="Information-sidebar">
         <h3>Pedidos:</h3>
-        <div className="Information-item">
-          <div className="Information-element">
-            <h4>Item Name</h4>
-            <span>$10</span>
+        {cart.map((item) => (
+          <div className="Information-item" key={item.title}>
+            <div className="Information-element">
+              <h4>{item.title}</h4>
+              <span>${item.price}</span>
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
